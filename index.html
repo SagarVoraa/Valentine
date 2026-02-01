@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Be My Valentine 💖</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+    }
+
+    .card {
+      background: white;
+      padding: 35px 30px;
+      border-radius: 22px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+      position: relative;
+      width: 90%;
+      max-width: 380px;
+    }
+
+    h1 {
+      margin-bottom: 25px;
+      color: #ff4d6d;
+      font-size: 2rem;
+    }
+
+    .lyrics {
+      font-size: 1.1rem;
+      color: #ff758c;
+      height: 30px;
+      margin-bottom: 20px;
+      font-style: italic;
+      animation: fadeLyrics 3s infinite;
+    }
+
+    @keyframes fadeLyrics {
+      0% { opacity: 0; }
+      20% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    .buttons {
+      position: relative;
+      height: 90px;
+    }
+
+    button {
+      padding: 12px 26px;
+      font-size: 1.05rem;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      position: absolute;
+      transition: all 0.3s ease;
+    }
+
+    #yesBtn {
+      background: #ff4d6d;
+      color: white;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    #yesBtn:hover {
+      transform: translateX(-50%) scale(1.1);
+    }
+
+    #noBtn {
+      background: #ddd;
+      color: #333;
+      left: 10%;
+    }
+
+    /* Celebration */
+    .celebration {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #ff758c, #ff7eb3);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .celebration h2 {
+      font-size: 2.7rem;
+      margin-bottom: 10px;
+    }
+
+    .celebration p {
+      font-size: 1.2rem;
+      max-width: 500px;
+    }
+
+    .signature {
+      margin-top: 20px;
+      font-size: 1.1rem;
+      font-style: italic;
+    }
+
+    .heart, .confetti {
+      position: absolute;
+      animation: floatUp 4s linear infinite;
+    }
+
+    .heart {
+      font-size: 2rem;
+    }
+
+    .confetti {
+      width: 8px;
+      height: 8px;
+      background: white;
+      animation-duration: 3s;
+    }
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-10vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Music -->
+  <audio id="bgMusic" loop>
+    <source src="taylor-violin.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="card" id="questionCard">
+    <h1>Madudiii 💖<br>Will you be my Valentine?</h1>
+
+    <div class="lyrics" id="lyrics">It's a love story, baby just say yes 🎻</div>
+
+    <div class="buttons">
+      <button id="yesBtn">Yes 💕</button>
+      <button id="noBtn">No 🙃</button>
+    </div>
+  </div>
+
+  <div class="celebration" id="celebration">
+    <h2>YAY MADUDIII!!! 🎉💘</h2>
+    <p>
+      You didn’t just say yes to being my Valentine…  
+      you said yes to laughs, memories, adventures, and a whole lot of love ❤️
+    </p>
+    <div class="signature">— Yours, always 💖</div>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const card = document.getElementById("questionCard");
+    const celebration = document.getElementById("celebration");
+    const music = document.getElementById("bgMusic");
+    const lyrics = document.getElementById("lyrics");
+
+    const lyricLines = [
+      "It's a love story, baby just say yes 🎻",
+      "Can I go where you go? 💕",
+      "All's well that ends well to end up with you ✨",
+      "You belong with me ❤️"
+    ];
+
+    let lyricIndex = 0;
+    setInterval(() => {
+      lyricIndex = (lyricIndex + 1) % lyricLines.length;
+      lyrics.innerText = lyricLines[lyricIndex];
+    }, 3000);
+
+    let noScale = 1;
+
+    // NO button chaos 😈
+    noBtn.addEventListener("mouseenter", () => {
+      const x = Math.random() * 75;
+      const y = Math.random() * 60;
+      noScale -= 0.08;
+
+      noBtn.style.left = x + "%";
+      noBtn.style.top = y + "%";
+      noBtn.style.transform = `scale(${noScale})`;
+      noBtn.style.opacity = noScale;
+
+      if (noScale <= 0.2) {
+        noBtn.style.display = "none";
+      }
+    });
+
+    // YES celebration 💥
+    yesBtn.addEventListener("click", () => {
+      music.play();
+      card.style.display = "none";
+      celebration.style.display = "flex";
+
+      // Hearts
+      setInterval(() => {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        celebration.appendChild(heart);
+        setTimeout(() => heart.remove(), 4000);
+      }, 250);
+
+      // Confetti
+      setInterval(() => {
+        const confetti = document.createElement("div");
+        confetti.className = "confetti";
+        confetti.style.left = Math.random() * 100 + "vw";
+        celebration.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 3000);
+      }, 150);
+    });
+  </script>
+
+</body>
+</html>
